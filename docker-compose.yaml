@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+    sqli-demo-fe:
+        build: ./sqli-demo-fe
+        ports:
+            - "3000:3000"
+        depends_on:
+            - sqli-demo-be
+
+    sqli-demo-be:
+        build: ./sqli-demo-be
+        ports:
+            - "5000:5000"
+        # environment:
+        #     - DB_HOST=mysql
+        #     - DB_USER=root
+        #     - DB_PASSWORD=password
+        #     - DB_NAME=sqlidemo
+        depends_on:
+            - mysql
+
+    mysql:
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: sqlidemo
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql

@@ -1,7 +1,12 @@
 import { useState } from "react";
 
+function isArray(what) {
+    return Object.prototype.toString.call(what) === '[object Array]';
+}
+
 const Classic = () => {
     const [search, setSearch] = useState("");
+    const [response, setResponse] = useState("");
 
     const handleInputChange = (event) => {
         setSearch(event.target.value);
@@ -19,7 +24,7 @@ const Classic = () => {
                 body: JSON.stringify({ query: search }),
             });
             const data = await response.json();
-            console.log("Response:", data);
+            setResponse(data);
         } catch (error) {
             console.error("Error sending search data:", error);
         }
@@ -32,6 +37,12 @@ const Classic = () => {
                 <p>Search for Courses</p>
                 <input type="text" value={search} onChange={handleInputChange} />
                 <button onClick={handleSubmit}>Submit</button>
+                <p>Result:</p>
+                {isArray(response) 
+                    ? response.map(row => (
+                        <p>{Object.values(row)}</p>
+                    ))
+                    : (<p>{JSON.stringify(response)}</p>)}
             </div>
         </>
     );
