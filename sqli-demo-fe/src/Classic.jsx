@@ -21,7 +21,7 @@ const Classic = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ query: search }),
+                body: JSON.stringify({ query: search, display: "rows" }),
             });
             const data = await response.json();
             setResponse(data);

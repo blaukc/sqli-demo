@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import mysql.connector
+import os
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 db_config = {
-    'host': 'mysql',
+    'host': os.getenv('DB_HOST', 'localhost'),
     'user': 'user',
     'password': 'password',
     'database': 'sqlidemo'
@@ -16,13 +17,15 @@ db_config = {
 @app.route("/courses", methods=['POST'])
 @cross_origin()
 def search_courses():
-    title = request.json.get('query', '')
+    code = request.json.get('query', '').upper()
+    display = request.json.get('display', "rows")
 
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
 
-    query = f"SELECT * FROM courses WHERE course_name LIKE '%{title}%'"
+    query = f"SELECT * FROM courses WHERE course_code = '{code}'"
     print(query)
+    
     try:
         cursor.execute(query)
         results = cursor.fetchall()
@@ -31,8 +34,14 @@ def search_courses():
     finally:
         cursor.close()
         connection.close()
-    
-    return jsonify(results)
+    print(results)
+    if display == "rows":
+        return jsonify(results)
+    if display == "bool":
+        return jsonify({
+            "result": len(results) > 0
+        })
+    return jsonify()
 
 @app.route("/", methods=['GET'])
 @cross_origin()

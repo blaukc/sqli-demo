@@ -12,11 +12,11 @@ services:
         build: ./sqli-demo-be
         ports:
             - "5000:5000"
-        # environment:
-        #     - DB_HOST=mysql
-        #     - DB_USER=root
-        #     - DB_PASSWORD=password
-        #     - DB_NAME=sqlidemo
+        environment:
+            - DB_HOST=mysql
+            #     - DB_USER=root
+            #     - DB_PASSWORD=password
+            #     - DB_NAME=sqlidemo
         depends_on:
             - mysql
 
