@@ -17,7 +17,7 @@ db_config = {
 @app.route("/courses", methods=['POST'])
 @cross_origin()
 def search_courses():
-    code = request.json.get('query', '').upper()
+    code = request.json.get('query', '')
     display = request.json.get('display', "rows")
 
     connection = mysql.connector.connect(**db_config)
