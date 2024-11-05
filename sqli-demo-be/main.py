@@ -19,21 +19,34 @@ db_config = {
 def search_courses():
     code = request.json.get('query', '')
     display = request.json.get('display', "rows")
+    protection = request.json.get('protection', "none")
+    results = None
+    if protection == "none":
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
 
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor(dictionary=True)
+        query = f"SELECT * FROM courses WHERE course_code = '{code}'"
+        print(query)
+        
+        try:
+            cursor.execute(query)
+            results = cursor.fetchall()
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+    elif protection == "input_validation":
+        # INPUT VALIDATION
+        # GET RESULTS 
+        pass
+    elif protection == "prepared_statements":
+        # GET RESULTS WITH PREPARED STATEMETNS
+        pass
+    elif protection == "orm":
+        # GET RESULTS WITH ORM
+        pass
 
-    query = f"SELECT * FROM courses WHERE course_code = '{code}'"
-    print(query)
-    
-    try:
-        cursor.execute(query)
-        results = cursor.fetchall()
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-    finally:
-        cursor.close()
-        connection.close()
     print(results)
     if display == "rows":
         return jsonify(results)

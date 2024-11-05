@@ -1,8 +1,10 @@
 import { useState } from "react";
+import ProtectionSelection from "./components/ProtectionSelection";
 
 const BlindContent = () => {
     const [search, setSearch] = useState("");
     const [response, setResponse] = useState(null);
+    const [protection, setProtection] = useState("none");
 
     const handleInputChange = (event) => {
         setSearch(event.target.value);
@@ -17,7 +19,7 @@ const BlindContent = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ query: search, display: "bool" }),
+                body: JSON.stringify({ query: search, display: "bool", protection: protection }),
             });
             const data = await response.json();
             setResponse(data.result);
@@ -29,6 +31,7 @@ const BlindContent = () => {
     return (
         <>
             <div>Courses</div>
+            <ProtectionSelection selectedOption={protection} setSelectedOption={setProtection} />
             <div>
                 <p>Search for Courses</p>
                 <input type="text" value={search} onChange={handleInputChange} />
