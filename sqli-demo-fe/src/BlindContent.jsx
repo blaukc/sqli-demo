@@ -34,7 +34,7 @@ const BlindContent = () => {
             <ProtectionSelection selectedOption={protection} setSelectedOption={setProtection} />
             <div>
                 <p>Search for Courses</p>
-                <input type="text" value={search} onChange={handleInputChange} />
+                <input type="text" value={search} onChange={handleInputChange} style={{width: '1000px'}} />
                 <button onClick={handleSubmit}>Submit</button>
                 <p>Result:</p>
                 <p>{response !== null && (response ? `Course exists in database!` : `Can't find course in database`)}</p>

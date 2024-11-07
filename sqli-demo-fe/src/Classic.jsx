@@ -38,7 +38,7 @@ const Classic = () => {
             <ProtectionSelection selectedOption={protection} setSelectedOption={setProtection} />
             <div>
                 <h2>Search for Courses</h2>
-                <input type="text" value={search} onChange={handleInputChange} />
+                <input type="text" value={search} onChange={handleInputChange} style={{width: '1000px'}} />
                 <button onClick={handleSubmit}>Submit</button>
                 <p>Result:</p>
                 {isArray(response) 
